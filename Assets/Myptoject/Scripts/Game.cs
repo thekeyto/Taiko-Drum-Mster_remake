@@ -96,6 +96,18 @@ public class Game : MonoBehaviour
                 if (music.isPlaying)
                     music.Stop();
             }
+            for (int i = 0; i < G.LANES; i++)
+            {
+                if (Input.GetKeyDown(lanekeycodes[i]))
+                {
+                    lanes[i].PointerDown();
+                }
+                else
+                if (Input.GetKeyUp(lanekeycodes[i]))
+                {
+                    lanes[i].PointerUp();
+                }
+            }
         }
     }
     private void SetNotes()
