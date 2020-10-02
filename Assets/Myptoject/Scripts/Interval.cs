@@ -6,15 +6,15 @@ using System.Collections;
 
 public class Interval
 {
-    public (float lower, float upper) bound;
+    public (double lower, double upper) bound;
 
-    public void SetBoundary(float lower,float upper)
+    public void SetBoundary(double lower,double upper)
     {
         bound.lower = lower;
         bound.upper = upper;
     }
 
-    public bool WhthinBound(float time)
+    public bool WhthinBound(double time)
     {
         return time >= bound.lower && time <= bound.upper;
     }

@@ -41,3 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: background1
+    uniqueID: 3354766937
+    locked: 0
+  - name: background2
+    uniqueID: 2715605385
+    locked: 0
+  - name: drum
+    uniqueID: 1041838921
+    locked: 0
+  - name: note
+    uniqueID: 2890572101
+    locked: 0

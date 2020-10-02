@@ -13,7 +13,7 @@ public class Game : MonoBehaviour
     public List<GameObject> note_obj;
     public bool[] hold;
 
-    public float timer = 0;
+    public double timer = 0;
 
     public bool timerswitch;
     public Text t_time;
@@ -35,7 +35,7 @@ public class Game : MonoBehaviour
 
     public bool is_play = false;
     
-    public float sline,aline;
+    public double sline,aline;
 
     public GameObject activeline, spawnline;
     private Note tracknote;
@@ -43,6 +43,7 @@ public class Game : MonoBehaviour
     public bool usekeycode = true;
     private KeyCode[] lanekeycodes;
 
+    private double dsptimesong = 0.0f;
     private void Awake()
     {
         note_obj = new List<GameObject>(500);
@@ -62,16 +63,93 @@ public class Game : MonoBehaviour
 
         var wrapper = GameObject.Find("SheetWrapper").GetComponent<SheetWrapper>();
         stock = wrapper.data;
-        stock.
-    }
-    void Start()
-    {
-        
-    }
+        stock.Interpret(sline, aline);
+        stock.Printout();
+        music.clip = wrapper.musicclip;
 
-    // Update is called once per frame
+        SetNotes();
+    }
+    private void Start()
+    {
+        dsptimesong = AudioSettings.dspTime;
+    }
     void Update()
     {
-        
+        if (timerswitch)
+        {
+            t_time.text = timer.ToString();
+            timer = AudioSettings.dspTime-dsptimesong;
+            if (timer > 0 && !is_play) { music.Play();is_play = true; }
+
+            double dtime = Time.deltaTime;
+            foreach(var lane in active)
+            {
+                foreach(var anote in lane)
+                {
+                    anote.noteobj.transform.localPosition -= new Vector3((float)(G.NOTE_SPEED * dtime), 0.0f, 0.0f);
+                }
+            }
+            Count();
+            if (stock.summary.endtime <= timer)
+            {
+                timerswitch = false;
+                if (music.isPlaying)
+                    music.Stop();
+            }
+        }
+    }
+    private void SetNotes()
+    {
+        foreach(var n in stock.data)
+        {
+            var note = Instantiate(note_template);
+            note.transform.SetParent(board.transform);
+            note.transform.localPosition = anchor_pos[n.lane];
+            note.transform.localEulerAngles = anchor_rot[n.lane];
+            note.transform.localScale = new Vector3(0f, 0f, 0f);
+            note.GetComponent<ParticleSystem>().Stop();
+            n.noteobj = note;
+            note_obj.Add(note);
+        }
+        tracknote = stock.data[stock.data.Count - 1];
+    }
+    private void Count()
+    {
+        foreach(var d in active)
+        {
+            if (d.Count!=0)
+            {
+                while (timer >= d.Peek().deadline)
+                {
+                    var top = d.Dequeue();
+                    combo = 0;
+                    Debug.Log("Note " + top.ID.ToString() + " deadline " + top.deadline.ToString() + "/" + timer.ToString() + " destroyed at " + top.noteobj.transform.localPosition.y);
+                    Destroy(top.noteobj);
+                    if (d.Count == 0) break;
+                }
+            }
+        }
+
+        if (stock.data.Count != 0)
+        {
+            while (stock.data[stock.data.Count - 1].stime <= timer)
+            {
+                Note topnote = stock.data[stock.data.Count - 1];
+                topnote.noteobj.transform.localScale = new Vector3(1f, 1f, 1f);
+                topnote.noteobj.GetComponent<ParticleSystem>().Play();
+                active[topnote.lane].Enqueue(topnote);
+                stock.data.RemoveAt(stock.data.Count - 1);
+                Debug.Log(topnote.ID.ToString() + " poped");
+
+                if (stock.data.Count == 0)
+                {
+                    break;
+                }
+            }
+        }
+    }
+    public void start()
+    {
+        timerswitch = true;
     }
 }

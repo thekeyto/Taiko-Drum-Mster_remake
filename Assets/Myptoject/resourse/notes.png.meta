@@ -1,7 +1,106 @@
 fileFormatVersion: 2
 guid: c53fe0a8ecf254647952bef821e40513
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -3127448798928283936
+    second: notes_0
+  - first:
+      213: -1649669319220892291
+    second: notes_1
+  - first:
+      213: 8794293679310905712
+    second: notes_2
+  - first:
+      213: 9041627313079446052
+    second: notes_3
+  - first:
+      213: -243938744375676594
+    second: notes_4
+  - first:
+      213: 2163783347542741529
+    second: notes_5
+  - first:
+      213: -6684350046975734806
+    second: notes_6
+  - first:
+      213: -3433716947577749884
+    second: notes_7
+  - first:
+      213: -8067896643019097731
+    second: notes_8
+  - first:
+      213: 1858307051623101537
+    second: notes_9
+  - first:
+      213: -4885638397862746055
+    second: notes_10
+  - first:
+      213: 3863193727544401831
+    second: notes_11
+  - first:
+      213: -1086997201143308891
+    second: notes_12
+  - first:
+      213: -1353451960534188622
+    second: notes_13
+  - first:
+      213: 1183647154687025153
+    second: notes_14
+  - first:
+      213: 8849654440953612450
+    second: notes_0
+  - first:
+      213: 5641352847366232526
+    second: notes_1
+  - first:
+      213: -6291908889126337273
+    second: notes_2
+  - first:
+      213: -3914390098615536539
+    second: notes_3
+  - first:
+      213: -4681787787153899110
+    second: notes_4
+  - first:
+      213: 7325410206943627646
+    second: notes_5
+  - first:
+      213: -781031593387201160
+    second: notes_6
+  - first:
+      213: 247622266170022001
+    second: notes_7
+  - first:
+      213: -6999912755921046435
+    second: notes_8
+  - first:
+      213: 5522849021130687592
+    second: notes_9
+  - first:
+      213: 4763669628779333453
+    second: notes_10
+  - first:
+      213: 6036124472597063592
+    second: notes_11
+  - first:
+      213: -6509969033130085674
+    second: notes_12
+  - first:
+      213: 5589231082865457485
+    second: notes_13
+  - first:
+      213: -6311936487680990950
+    second: notes_14
+  - first:
+      213: 1572887684306367966
+    second: notes_15
+  - first:
+      213: -4248822444976298966
+    second: notes_16
+  - first:
+      213: 9137577950229662660
+    second: notes_17
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -20,7 +119,7 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
@@ -40,13 +139,13 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 49, y: 49, z: 624, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -71,9 +170,447 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: tvOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: notes_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 48
+        width: 51
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a88ff993d940da70800000000000000
+      internalID: 8849654440953612450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: notes_1
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 53
+        width: 36
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec917e7868c1a4e40800000000000000
+      internalID: 5641352847366232526
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: notes_2
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 53
+        width: 36
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70580888336aea8a0800000000000000
+      internalID: -6291908889126337273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: notes_3
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 48
+        width: 50
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 564f6b3d1fa4da9c0800000000000000
+      internalID: -3914390098615536539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: notes_4
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 53
+        width: 36
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a910ee010d2f60fb0800000000000000
+      internalID: -4681787787153899110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: notes_5
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 53
+        width: 49
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7945e285c519a560800000000000000
+      internalID: 7325410206943627646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: notes_6
+      rect:
+        serializedVersion: 2
+        x: 358
+        y: 53
+        width: 21
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87d6cc567e73925f0800000000000000
+      internalID: -781031593387201160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: notes_7
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 0
+        width: 97
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1789a8d932bbf6300800000000000000
+      internalID: 247622266170022001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: notes_8
+      rect:
+        serializedVersion: 2
+        x: 502
+        y: 45
+        width: 26
+        height: 51
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d54b9948f605bde90800000000000000
+      internalID: -6999912755921046435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: notes_9
+      rect:
+        serializedVersion: 2
+        x: 534
+        y: 52
+        width: 85
+        height: 38
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 864cb946ce915ac40800000000000000
+      internalID: 5522849021130687592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: notes_10
+      rect:
+        serializedVersion: 2
+        x: 624
+        y: 0
+        width: 85
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4785b2d944fb1240800000000000000
+      internalID: 4763669628779333453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: notes_11
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 5
+        width: 36
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a7a0312a3f94c350800000000000000
+      internalID: 6036124472597063592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: notes_12
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 5
+        width: 36
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d2fc79d7a1f7a5a0800000000000000
+      internalID: -6509969033130085674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: notes_13
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 5
+        width: 36
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4974cd8e00f09d40800000000000000
+      internalID: 5589231082865457485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: notes_14
+      rect:
+        serializedVersion: 2
+        x: 534
+        y: 4
+        width: 85
+        height: 38
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a11a2fed43f7768a0800000000000000
+      internalID: -6311936487680990950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: notes_15
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 48
+        width: 50
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed5faaee30504d510800000000000000
+      internalID: 1572887684306367966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: notes_16
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 0
+        width: 49
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a242b7d5f762905c0800000000000000
+      internalID: -4248822444976298966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: notes_17
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 50
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4cb81e69bb23fce70800000000000000
+      internalID: 9137577950229662660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
