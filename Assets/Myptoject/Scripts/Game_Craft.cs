@@ -8,18 +8,19 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
 
-public class Game_Craft : MonoBehaviour
+public class Game_Craft : MonoBehaviour//完成谱面的制作
 {
     public (string musicpath, string musictype) path;
     public double timer = 0f;
     public Text time;
-    public Button startbtn, finishbtn, tapbtn;
+    public Button startbtn, finishbtn;
     public bool timerswitch = false;
 
     public AudioSource music;
     public DataWrapper dwapper;
     public GameObject notes;
-    public GameObject tempnote;
+    public NotePrefab notePrefab;
+    public GameObject[] tempnote=new GameObject[5];
     public GameObject startingnote;
 
     public Vector3 anchor_spawn;
@@ -28,7 +29,7 @@ public class Game_Craft : MonoBehaviour
     {
         music = GameObject.Find("Music").GetComponent<AudioSource>();
 
-        dwapper.taplist = new List<double>();
+        dwapper.taplist = new List<(int,double)>();
         anchor_spawn = startingnote.transform.position;
     }
 
@@ -37,25 +38,51 @@ public class Game_Craft : MonoBehaviour
         if (timerswitch)
         {
             time.text = timer.ToString();
-            timer += Time.deltaTime;
-
+            timer = AudioSettings.dspTime;
+            inputkeycode();
             notes.transform.localPosition -= new Vector3((float)G.NOTE_SPEED * Time.deltaTime, 0f, 0f);
         }
     }
 
-    public void Tap()
+    int keycodeid()
     {
-        dwapper.taplist.Add(timer);
-        Debug.Log("Time " + timer.ToString() + " added to the list");
-
-        StartCoroutine(CreateNote());
+        if ((Input.GetKeyDown(KeyCode.D) && Input.GetKeyDown(KeyCode.K))) return 2;
+        else if (Input.GetKeyDown(KeyCode.F) && Input.GetKeyDown(KeyCode.J)) return 3;
+        else if (Input.GetKeyDown(KeyCode.D)|| Input.GetKeyDown(KeyCode.K)) return 0;
+        else if (Input.GetKeyDown(KeyCode.F)|| Input.GetKeyDown(KeyCode.J)) return 1;
+        return -1;
     }
-
-    public IEnumerator CreateNote()
+    public void inputkeycode()
     {
-        var note = Instantiate(tempnote);
+        int keyId = keycodeid();
+        if (keyId!=-1)
+        {
+            dwapper.taplist.Add((keyId,timer));
+            Debug.Log("Time " + timer.ToString() + " added to the list");
+
+            StartCoroutine(CreateNote(keyId));
+        }
+    }
+    public void startRecording()
+    {
+        music.Play();
+        finishbtn.interactable = true;
+        startbtn.interactable = false;
+        timerswitch = true;
+    }
+    public void stopRecording()
+    {
+        timerswitch = false;
+        music.Stop();
+        SceneManager.LoadScene("Adjust");
+
+    }
+    public IEnumerator CreateNote(int id)
+    {
+        var note = Instantiate(notePrefab.itemlist[id]);
         note.transform.SetParent(notes.transform);
         note.transform.position = anchor_spawn;
+        Destroy(note, 8.0f);
         yield return null;
     }
 }

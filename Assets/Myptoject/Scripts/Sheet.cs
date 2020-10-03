@@ -62,7 +62,7 @@ public class sheetSummary
 {
     public string title = "";
     public string author = "";
-    public string difficutty = "";
+    public int difficulty = 0;
     public string version = "";
     public string aside = "";
     public string createdate = "";

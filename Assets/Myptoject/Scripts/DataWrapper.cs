@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DataWrapper : MonoBehaviour
 {
-    public List<double> taplist;
+    public List<(int ,double)> taplist;
 
     private void Awake()
     {

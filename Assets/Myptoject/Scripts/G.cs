@@ -6,8 +6,8 @@ using UnityEngine;
 public class G : MonoBehaviour
 {
     //settings
-    public static AudioSettings setting = null;
-    public static SystemLanguage lang;
+    public static Setting setting = null;
+    public static Language lang;
     public static int CURLANG = 0;
 
     //paths
@@ -24,7 +24,7 @@ public class G : MonoBehaviour
     //games
     public const double TIMER_INTERVAL = 20.0f;
 
-    public const int LANES = 1;
+    public const int LANES = 4;
 
     public const double NOTE_SPEED = 2f;
     public enum POSITION { Fixed,Random};
@@ -43,8 +43,8 @@ public class G : MonoBehaviour
     public static double ACTIVELINE = -2.2f;
     public static readonly double DISTANSE_SA = (STARTLINE - ACTIVELINE) / G.NOTE_SPEED;
 
-    public enum LANGUAGE { CH,EN,JP};
-
+    public enum LANGUAGE { CH, EN, JP };
+    
     public static class CRAF
     {
         public static double NOTES_SPEED = 300f;

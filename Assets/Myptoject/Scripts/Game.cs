@@ -21,7 +21,7 @@ public class Game : MonoBehaviour
     public int points;
     public Text t_points;
 
-    public GameObject note_template;
+    public GameObject[] note_template=new GameObject[5];
     public GameObject board;
 
     public AudioSource music;
@@ -114,7 +114,7 @@ public class Game : MonoBehaviour
     {
         foreach(var n in stock.data)
         {
-            var note = Instantiate(note_template);
+            var note = Instantiate(note_template[1]);
             note.transform.SetParent(board.transform);
             note.transform.localPosition = anchor_pos[n.lane];
             note.transform.localEulerAngles = anchor_rot[n.lane];
