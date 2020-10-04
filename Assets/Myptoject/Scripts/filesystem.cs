@@ -254,7 +254,7 @@ public static class filesystem
             {
                 Debug.Log("Craft temp music: " + file);
                 var extension = Path.GetExtension(file);
-                if (extension == ".ogg" || extension == ".wav")
+                if (extension == ".ogg" || extension == ".wav"||extension==".mp3")
                 {
                     result.Add((file, Path.GetFileName(file), extension));
                 }

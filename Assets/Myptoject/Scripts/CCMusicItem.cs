@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class CCMusicItem : MonoBehaviour
 {
@@ -13,7 +14,6 @@ public class CCMusicItem : MonoBehaviour
     public string musicpath;
     public string musictype;
     public AudioSource music;
-    public NowLoading loading;
 
     public void Set(string filename, string musicpath, string extension)
     {
@@ -35,7 +35,7 @@ public class CCMusicItem : MonoBehaviour
 
     private IEnumerator getaudioclip(UnityWebRequest req)
     {
-        yield return req.Send();
+        yield return  req.SendWebRequest();
         if (req.isNetworkError)
         {
             Debug.Log(req.error);
@@ -44,7 +44,7 @@ public class CCMusicItem : MonoBehaviour
         {
             G.CRAF.currentmusic_path = musicpath;
             music.clip = DownloadHandlerAudioClip.GetContent(req);
-            loading.LoadNextScene("Craft");
+            SceneManager.LoadScene("craftMusic");
         }
     }
 }

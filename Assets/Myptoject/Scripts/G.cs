@@ -6,7 +6,7 @@ using UnityEngine;
 public class G : MonoBehaviour
 {
     //settings
-    public static Setting setting = null;
+    public static Setting setting = new Setting();
     public static Language lang;
     public static int CURLANG = 0;
 

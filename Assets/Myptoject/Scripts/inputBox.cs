@@ -21,6 +21,5 @@ public class InputBox : MonoBehaviour
 
         this.gameObject.transform.DOScale(fullsize, 0.5f);
     }
-
 }
 

@@ -24,7 +24,8 @@ public class Game_Craft : MonoBehaviour//完成谱面的制作
     public GameObject startingnote;
 
     public Vector3 anchor_spawn;
-
+    
+    private double dectime=0;
     private void Awake()
     {
         music = GameObject.Find("Music").GetComponent<AudioSource>();
@@ -37,14 +38,14 @@ public class Game_Craft : MonoBehaviour//完成谱面的制作
     {
         if (timerswitch)
         {
+            timer = AudioSettings.dspTime-dectime;
             time.text = timer.ToString();
-            timer = AudioSettings.dspTime;
             inputkeycode();
             notes.transform.localPosition -= new Vector3((float)G.NOTE_SPEED * Time.deltaTime, 0f, 0f);
         }
     }
 
-    int keycodeid()
+    int keycodeid()//按键识别
     {
         if ((Input.GetKeyDown(KeyCode.D) && Input.GetKeyDown(KeyCode.K))) return 2;
         else if (Input.GetKeyDown(KeyCode.F) && Input.GetKeyDown(KeyCode.J)) return 3;
@@ -69,12 +70,13 @@ public class Game_Craft : MonoBehaviour//完成谱面的制作
         finishbtn.interactable = true;
         startbtn.interactable = false;
         timerswitch = true;
+        dectime = AudioSettings.dspTime;
     }
     public void stopRecording()
     {
         timerswitch = false;
         music.Stop();
-        SceneManager.LoadScene("Adjust");
+        SceneManager.LoadScene("gameAdjust");
 
     }
     public IEnumerator CreateNote(int id)

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Game_Adjust : MonoBehaviour
 {
@@ -18,16 +19,12 @@ public class Game_Adjust : MonoBehaviour
         public GameObject noteobj;
     }
 
-    public GameObject tempnote;
+    public NotePrefab tempnote;
     public GameObject musicsheet;
     public GameObject lane;
-    public MessageBox msgbox;
-    public InputBox inbox;
-    public Group_Editing ge;
-    public SelectionControl sc;
-    public NowLoading loading;
-    public InputField author, title, difficulty, aside;
-    public Button previewbtn, savebtn, autocompletebtn;
+    public InputField title, difficulty;
+    public Button previewbtn, savebtn;
+    public Text time;
     private bool is_previewing = false;
 
     private double timer = 0f;
@@ -42,6 +39,8 @@ public class Game_Adjust : MonoBehaviour
     public float offset = 0f;
 
     private float lanes_ypos;
+    private double dectime;
+    private int flag = 0;
 
     private readonly float activeline = -500.0f;
 
@@ -60,23 +59,29 @@ public class Game_Adjust : MonoBehaviour
             taplist.Add(new N(a, b, 2, null));
         }
         Destroy(obj);
-        SetNotesOnScreen();
         Array.ForEach(se, x => x.volume = G.setting.sevolume);
-    }
-    private void Start()
-    {
-        msgbox.Show(G.lang.message_sheet_edit_guides[G.setting.language]);
     }
     private void Update()
     {
         if (is_previewing)
         {
+            time.text = timer.ToString();
             var deltatime = Time.deltaTime;
-            timer = AudioSettings.dspTime;
-            musicsheet.transform.localPosition -= new Vector3(0f, (float)G.CRAF.NOTES_SPEED * deltatime, 0f);
+            timer = AudioSettings.dspTime-dectime;
+            musicsheet.transform.localPosition -= new Vector3((float)G.CRAF.NOTES_SPEED * deltatime, 0f,  0f);
+
+            while (taplist[flag].atime <= timer + 10 && flag < taplist.Count())
+            { 
+                flag++; 
+                var instnote = Instantiate(tempnote.itemlist[taplist[flag].type]);
+                instnote.transform.SetParent(musicsheet.transform);
+                instnote.transform.localPosition = new Vector3((float)(taplist[flag].atime-timer)*(float)G.CRAF.NOTES_SPEED, lanes_ypos,  0f);
+                taplist[flag].noteobj = instnote;
+            }
             while(taplist[noteindex].atime<=timer)
             {
-                se[taplist[noteindex].lane].Play();
+                se[taplist[noteindex].type].Play();
+                Destroy(taplist[noteindex].noteobj);
                 noteindex++;
                 if (noteindex>taplist.Count)
                 {
@@ -84,43 +89,7 @@ public class Game_Adjust : MonoBehaviour
                     break;
                 }
             }
-        }
-        else
-        {
-            if (Input.GetKey(KeyCode.S))
-            {
-                sc.DeSelect();
-                if (offset >= 0f)
-                {
-                    musicsheet.transform.localPosition -= sheetshift;
-                    offset += 5f;
-                }
-            }
-            else if (Input.GetKey(KeyCode.W))
-            {
-                sc.DeSelect();
-                if (offset > 0f)
-                {
-                    musicsheet.transform.localPosition += sheetshift;
-                    offset -= offset >= 5f ? 5f : offset;
-                }
-            }
-            else if (Input.GetKey(KeyCode.R))
-            {
-                ge.ShiftUp();
-            }
-            else if (Input.GetKey(KeyCode.F))
-            {
-                ge.ShiftDown();
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                ge.ShiftLeft();
-            }
-            else if (Input.GetKey(KeyCode.G))
-            {
-                ge.ShiftRight();
-            }
+            Debug.Log(noteindex + ' ' + taplist[noteindex].atime);
         }
     }
     public void ResetNote(N note)
@@ -129,13 +98,7 @@ public class Game_Adjust : MonoBehaviour
     }
     public void TransferAndSave()
     {
-        // verify input
-        if (author.text == "" || title.text == "" || difficulty.text == "")
-        {
-            msgbox.Show(G.lang.message_please_fill_required_fields[G.setting.language]);
-            return;
-        }
-        else if (taplist.Count == 0)
+        if (taplist.Count == 0)
         {
             return;
         }
@@ -149,35 +112,42 @@ public class Game_Adjust : MonoBehaviour
             Note newn = new Note
             {
                 atime = n.atime,
+                type = n.type,
                 ID = id,
                 lane = n.lane
             };
             sheet.data.Add(newn);
             id += 1;
         }
-        sheet.summary.author = author.text;
         sheet.summary.title = title.text;
         sheet.summary.difficulty = int.Parse(difficulty.text);
-        sheet.summary.aside = aside.text;
         sheet.summary.endtime = taplist[taplist.Count - 1].atime + 2f;
 
-        // Save the music sheet
+        // 保存乐谱
         filesystem.Save_MusicSheet(sheet, title.text);
     }
-    private void SetNotesOnScreen()
+    
+    public void PreviewSheet()
     {
-        foreach (var n in taplist)
+        if (!is_previewing)
         {
-            var instnote = Instantiate(tempnote);
-            instnote.transform.SetParent(musicsheet.transform);
-            instnote.transform.localPosition = new Vector3(lanes_ypos, (float)(activeline + n.atime * G.CRAF.NOTES_SPEED), 0f);
-            n.noteobj = instnote;
+            previewbtn.interactable = false;
+            timer = 0;
+            music.time = 0;
+            noteindex = 0;
+            music.Play();
+            dectime = AudioSettings.dspTime;
+            is_previewing = true;
         }
     }
     public void SortN()
     {
         taplist.Sort(
-            (a, b) => { if (a.atime > b.atime) { return 1; } else { return -1; } }
-            );
+            (a, b) => { if (a.atime > b.atime) { return 1; } else { return -1; } });
+    }
+    public void BackMenu()
+    {
+        Destroy(music);
+        SceneManager.LoadScene("Menu");
     }
 }

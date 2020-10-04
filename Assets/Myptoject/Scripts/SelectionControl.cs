@@ -54,7 +54,6 @@ public class SelectionControl : MonoBehaviour
         }
         if (game.selected.Count > 0)
         {
-            ge.On();
             // Ascending
             game.selected.Sort(
                 (a, b) => { if (a.atime > b.atime) { return 1; } else { return -1; } }
@@ -63,13 +62,11 @@ public class SelectionControl : MonoBehaviour
         }
         else
         {
-            ge.Off();
         }
     }
 
     public void DeSelect()
     {
-        ge.Off();
         game.selected.Clear();
         image.transform.localScale = new Vector3(0f, 0f, 0f);
     }

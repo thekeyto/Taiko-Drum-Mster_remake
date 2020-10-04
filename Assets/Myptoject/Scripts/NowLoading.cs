@@ -18,7 +18,7 @@ public class NowLoading : MonoBehaviour
     {
         AsyncOperation async = SceneManager.LoadSceneAsync(scenename);
 
-        // Wait until the asynchronous scene fully loads
+        // 异步
         while (!async.isDone)
         {
             progressbar.size = async.progress;

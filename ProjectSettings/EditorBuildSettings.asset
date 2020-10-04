@@ -4,5 +4,23 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Myptoject/Scenes/Menu.unity
+    guid: 06baec0c754e5f84ab38140253f315a3
+  - enabled: 1
+    path: Assets/Myptoject/Scenes/chooseCraftMusic.unity
+    guid: 1e6ab10a08652ff4dbe0a32204a399d9
+  - enabled: 1
+    path: Assets/Myptoject/Scenes/ChooseMusic.unity
+    guid: 0b2be36762d7dfe4baa2b2a9abcd3c6c
+  - enabled: 1
+    path: Assets/Myptoject/Scenes/craftMusic.unity
+    guid: 4af012039b0e2f443b24a4299e7ebe44
+  - enabled: 1
+    path: Assets/Myptoject/Scenes/gameAdjust.unity
+    guid: 96daf6dd8dea2434286767c697d4ff67
+  - enabled: 1
+    path: Assets/Myptoject/Scenes/SampleScene.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects: {}
