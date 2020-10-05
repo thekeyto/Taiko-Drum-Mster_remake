@@ -5,7 +5,7 @@ using System;
 
 public class TapArea : MonoBehaviour
 {
-    public int index;
+    /*public int index;
     public Game game;
     public KeyCode keycode;
     
@@ -69,5 +69,5 @@ public class TapArea : MonoBehaviour
             game.combo = 0;
             return (0, "Miss");
         }
-    }
+    }*/
 }

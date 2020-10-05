@@ -15,22 +15,8 @@ public class sheet //音符的容器
     {
         summary = new sheetSummary 
         {
-            version = G.VERSION,
             createdate = DateTime.Now.ToLongDateString()
         };
-    }
-    public void Random_Init(int total_notes)
-    {
-        for(int i=0;i<total_notes;i++)
-        {
-            Note n = new Note
-            {
-                ID = i,
-                atime = (double)G.rng.Next(0, 60000),
-                lane = G.rng.Next(0, G.LANES)
-            };
-            data.Add(n);
-        }
     }
     public void Interpret(double startline = 0f, double activeline = 0f)
     {
@@ -43,13 +29,6 @@ public class sheet //音符的容器
             d.interval.SetBoundary(d.atime - G.MISS_MARGIN, d.atime + G.MISS_MARGIN);
             
             d.deadline = d.interval.bound.upper;
-        }
-    }
-    public void Printout()
-    {
-        foreach(var d in data)
-        {
-            Debug.Log(d.ToString());
         }
     }
     public sheetSummary GetSummary()

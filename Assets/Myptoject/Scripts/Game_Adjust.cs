@@ -12,10 +12,9 @@ public class Game_Adjust : MonoBehaviour
 {
     public sealed class N
     {
-        public N(int t,double a, int l, GameObject n) { type = t; atime = a;lane = l; noteobj = n; }
+        public N(int t,double a, GameObject n) { type = t; atime = a; noteobj = n; }
         public int type;
         public double atime;
-        public int lane;
         public GameObject noteobj;
     }
 
@@ -24,7 +23,8 @@ public class Game_Adjust : MonoBehaviour
     public GameObject lane;
     public InputField title, difficulty;
     public Button previewbtn, savebtn;
-    public Text time;
+    public Text time,deb;
+    public GameObject musicobj;
     private bool is_previewing = false;
 
     private double timer = 0f;
@@ -42,24 +42,20 @@ public class Game_Adjust : MonoBehaviour
     private double dectime;
     private int flag = 0;
 
-    private readonly float activeline = -500.0f;
-
-    private readonly Vector3 sheetshift = new Vector3(0f, 5f, 0f);
 
     private void Awake()
     {
-        music = GameObject.Find("Music").GetComponent<AudioSource>();
+        musicobj = GameObject.Find("Music");
+        music = musicobj.GetComponent<AudioSource>();
         var obj = GameObject.Find("Data");
 
-        selected = new List<N>(15);
-        taplist = new List<N>(100);
+        taplist = new List<N>();
         lanes_ypos = lane.transform.localPosition.x;
         foreach(var (a,b) in obj.GetComponent<DataWrapper>().taplist)
         {
-            taplist.Add(new N(a, b, 2, null));
+            taplist.Add(new N(a, b, null));
         }
         Destroy(obj);
-        Array.ForEach(se, x => x.volume = G.setting.sevolume);
     }
     private void Update()
     {
@@ -68,33 +64,32 @@ public class Game_Adjust : MonoBehaviour
             time.text = timer.ToString();
             var deltatime = Time.deltaTime;
             timer = AudioSettings.dspTime-dectime;
-            musicsheet.transform.localPosition -= new Vector3((float)G.CRAF.NOTES_SPEED * deltatime, 0f,  0f);
+            musicsheet.transform.localPosition -= new Vector3((float)G.CRAF.NOTES_SPEED *100* deltatime, 0f,  0f);
 
-            while (taplist[flag].atime <= timer + 10 && flag < taplist.Count())
+            while (taplist[flag].atime <= timer + 3 && flag < taplist.Count()-1)
             { 
                 flag++; 
                 var instnote = Instantiate(tempnote.itemlist[taplist[flag].type]);
                 instnote.transform.SetParent(musicsheet.transform);
-                instnote.transform.localPosition = new Vector3((float)(taplist[flag].atime-timer)*(float)G.CRAF.NOTES_SPEED, lanes_ypos,  0f);
+                instnote.transform.localPosition = new Vector3(-460+100*(float)(taplist[flag].atime-timer)*(float)G.CRAF.NOTES_SPEED, 180f,  0f);
                 taplist[flag].noteobj = instnote;
             }
             while(taplist[noteindex].atime<=timer)
             {
+
+                deb.text = flag.ToString() + ' ' + taplist[noteindex].atime.ToString() + ' ' + noteindex.ToString();
+                Debug.Log(taplist[noteindex].type.ToString());
                 se[taplist[noteindex].type].Play();
+
                 Destroy(taplist[noteindex].noteobj);
                 noteindex++;
-                if (noteindex>taplist.Count)
+                if (noteindex>=taplist.Count)
                 {
                     is_previewing = false; previewbtn.interactable = true; music.Stop();
                     break;
                 }
             }
-            Debug.Log(noteindex + ' ' + taplist[noteindex].atime);
         }
-    }
-    public void ResetNote(N note)
-    {
-        note.noteobj.transform.localPosition = new Vector3((float)lanes_ypos, (float)(activeline + note.atime * G.CRAF.NOTES_SPEED), 0f);
     }
     public void TransferAndSave()
     {
@@ -114,15 +109,13 @@ public class Game_Adjust : MonoBehaviour
                 atime = n.atime,
                 type = n.type,
                 ID = id,
-                lane = n.lane
             };
             sheet.data.Add(newn);
-            id += 1;
+            id++;
         }
         sheet.summary.title = title.text;
         sheet.summary.difficulty = int.Parse(difficulty.text);
         sheet.summary.endtime = taplist[taplist.Count - 1].atime + 2f;
-
         // 保存乐谱
         filesystem.Save_MusicSheet(sheet, title.text);
     }
@@ -131,8 +124,10 @@ public class Game_Adjust : MonoBehaviour
     {
         if (!is_previewing)
         {
+            musicsheet.transform.position = new Vector3(0f, 0f, 0f);
             previewbtn.interactable = false;
             timer = 0;
+            flag = 0;
             music.time = 0;
             noteindex = 0;
             music.Play();
@@ -147,7 +142,11 @@ public class Game_Adjust : MonoBehaviour
     }
     public void BackMenu()
     {
-        Destroy(music);
+        Destroy(musicobj);
         SceneManager.LoadScene("Menu");
+    }
+    public void ResetNote(N note)
+    {
+        note.noteobj.transform.localPosition = new Vector3( (float) (note.atime * G.CRAF.NOTES_SPEED),lanes_ypos,  0f);
     }
 }

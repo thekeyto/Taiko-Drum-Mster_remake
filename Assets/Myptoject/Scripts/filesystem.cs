@@ -47,13 +47,15 @@ public static class filesystem
     {
         var sheet_collection_path = Path.Combine(sheet_lib_directory, foldername);
         var musicsheet_path = Path.Combine(sheet_collection_path, "musicsheet.st");
-        var checksum_path = Path.Combine(sheet_collection_path, "checksum,sha");
-
-        if (!Directory.Exists(sheet_lib_directory))
+        var checksum_path = Path.Combine(sheet_collection_path, "checksum.sha");
+        
+        //Debug.Log("Save");
+        Debug.Log(sheet_lib_directory.ToString() + " " + Directory.Exists(sheet_lib_directory));
+        if (!Directory.Exists(sheet_collection_path))
         {
+            Debug.Log(sheet_collection_path.ToString());
             Directory.CreateDirectory(sheet_collection_path);
             FileStream fstream = new FileStream(musicsheet_path, FileMode.Create);
-
             try
             {
                 formatter.Serialize(fstream, savedsheet);

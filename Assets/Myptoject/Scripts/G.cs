@@ -47,7 +47,7 @@ public class G : MonoBehaviour
     
     public static class CRAF
     {
-        public static double NOTES_SPEED = 300f;
+        public static double NOTES_SPEED = 5f;
         public static string currentmusic_path = null;
         public readonly static Dictionary<string, AudioType> mtype = new Dictionary<string, AudioType>() {
             { ".mp3",  AudioType.MPEG}, { ".wav",  AudioType.WAV},{ ".ogg",  AudioType.OGGVORBIS}

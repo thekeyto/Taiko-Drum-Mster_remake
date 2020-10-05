@@ -1,167 +1,99 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
+using System.IO;
+using System.Linq;
+using System.Text;
 using UnityEngine;
-using System;
-
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class Game : MonoBehaviour
 {
-    public sheet stock=new sheet();
-    public Stack<Note> pending = new Stack<Note>();
-    public TapArea[] lanes;
-    public Queue<Note>[] active;
-    public List<GameObject> note_obj;
-    public bool[] hold;
+    public sealed class N
+    {
+        public N(int t, double a, GameObject n) { type = t; atime = a; noteobj = n; }
+        public int type;
+        public double atime;
+        public GameObject noteobj;
+    }
 
-    public double timer = 0;
+    public NotePrefab tempnote;
+    public GameObject musicsheet;
+    public GameObject lane;
+    public GameObject musicobj;
+    public SheetWrapper data;
+    public Text time;
+    private bool is_playing = false;
 
-    public bool timerswitch;
-    public Text t_time;
-    
-    public int points;
-    public Text t_points;
-
-    public GameObject[] note_template=new GameObject[5];
-    public GameObject board;
+    private double timer = 0f;
+    private int noteindex = 0;
 
     public AudioSource music;
     public AudioSource[] se;
 
-    public GameObject[] anchors;
-    public Vector3[] anchor_pos = new Vector3[G.LANES];
-    public Vector3[] anchor_rot = new Vector3[G.LANES];
+    public List<N> taplist;
 
-    public int combo = 0;
+    public float offset = 0f;
 
-    public bool is_play = false;
-    
-    public double sline,aline;
+    private float lanes_ypos;
+    private double dectime;
+    private int flag = 0;
 
-    public GameObject activeline, spawnline;
-    private Note tracknote;
 
-    public bool usekeycode = true;
-    private KeyCode[] lanekeycodes;
-
-    private double dsptimesong = 0.0f;
     private void Awake()
     {
-        note_obj = new List<GameObject>(500);
-        lanekeycodes = new KeyCode[G.LANES];
+        musicobj = GameObject.Find("Music");
+        data = GameObject.Find("SheetWapper").GetComponent<SheetWrapper>();
+        
+        music = musicobj.GetComponent<AudioSource>();
+        music.clip = data.musicclip;
 
-        timer = -G.DISTANSE_SA;
+        is_playing = true;
+        dectime = AudioSettings.dspTime;
 
-        active = new Queue<Note>[G.LANES];
-        hold = new bool[1] { false };
-        for(var i=0;i<G.LANES; i++)
+        taplist = new List<N>();
+        lanes_ypos = lane.transform.localPosition.y;
+        foreach (var n in data.data.data)
         {
-            active[i] = new Queue<Note>(15);
-
-            anchor_pos[i] = anchors[i].transform.localPosition;
-            anchor_rot[i] = anchors[i].transform.localEulerAngles;
+            taplist.Add(new N(n.type, n.atime, null));
         }
-
-        var wrapper = GameObject.Find("SheetWrapper").GetComponent<SheetWrapper>();
-        stock = wrapper.data;
-        stock.Interpret(sline, aline);
-        stock.Printout();
-        music.clip = wrapper.musicclip;
-
-        SetNotes();
+        Destroy(GameObject.Find("SheetWapper"));
     }
-    private void Start()
+    private void Update()
     {
-        dsptimesong = AudioSettings.dspTime;
-    }
-    void Update()
-    {
-        if (timerswitch)
+        Debug.Log(timer.ToString());
+        if (is_playing)
         {
-            t_time.text = timer.ToString();
-            timer = AudioSettings.dspTime-dsptimesong;
-            if (timer > 0 && !is_play) { music.Play();is_play = true; }
+            time.text = timer.ToString();
+            var deltatime = Time.deltaTime;
+            timer = AudioSettings.dspTime - dectime;
+            musicsheet.transform.localPosition -= new Vector3((float)G.CRAF.NOTES_SPEED * 100 * deltatime, 0f, 0f);
 
-            double dtime = Time.deltaTime;
-            foreach(var lane in active)
+            while (taplist[flag].atime <= timer + 3 && flag < taplist.Count - 1)
             {
-                foreach(var anote in lane)
-                {
-                    anote.noteobj.transform.localPosition -= new Vector3((float)(G.NOTE_SPEED * dtime), 0.0f, 0.0f);
-                }
+                flag++;
+                var instnote = Instantiate(tempnote.itemlist[taplist[flag].type]);
+                instnote.transform.SetParent(musicsheet.transform);
+                instnote.transform.localPosition = new Vector3(-309.3256f + 100 * (float)(taplist[flag].atime - timer) * (float)G.CRAF.NOTES_SPEED, 193, 0f);
+                taplist[flag].noteobj = instnote;
             }
-            Count();
-            if (stock.summary.endtime <= timer)
+            while (taplist[noteindex].atime <= timer)
             {
-                timerswitch = false;
-                if (music.isPlaying)
-                    music.Stop();
-            }
-            for (int i = 0; i < G.LANES; i++)
-            {
-                if (Input.GetKeyDown(lanekeycodes[i]))
-                {
-                    lanes[i].PointerDown();
-                }
-                else
-                if (Input.GetKeyUp(lanekeycodes[i]))
-                {
-                    lanes[i].PointerUp();
-                }
-            }
-        }
-    }
-    private void SetNotes()
-    {
-        foreach(var n in stock.data)
-        {
-            var note = Instantiate(note_template[1]);
-            note.transform.SetParent(board.transform);
-            note.transform.localPosition = anchor_pos[n.lane];
-            note.transform.localEulerAngles = anchor_rot[n.lane];
-            note.transform.localScale = new Vector3(0f, 0f, 0f);
-            note.GetComponent<ParticleSystem>().Stop();
-            n.noteobj = note;
-            note_obj.Add(note);
-        }
-        tracknote = stock.data[stock.data.Count - 1];
-    }
-    private void Count()
-    {
-        foreach(var d in active)
-        {
-            if (d.Count!=0)
-            {
-                while (timer >= d.Peek().deadline)
-                {
-                    var top = d.Dequeue();
-                    combo = 0;
-                    Debug.Log("Note " + top.ID.ToString() + " deadline " + top.deadline.ToString() + "/" + timer.ToString() + " destroyed at " + top.noteobj.transform.localPosition.y);
-                    Destroy(top.noteobj);
-                    if (d.Count == 0) break;
-                }
-            }
-        }
+                Debug.Log(taplist[noteindex].type.ToString());
+                se[taplist[noteindex].type].Play();
 
-        if (stock.data.Count != 0)
-        {
-            while (stock.data[stock.data.Count - 1].stime <= timer)
-            {
-                Note topnote = stock.data[stock.data.Count - 1];
-                topnote.noteobj.transform.localScale = new Vector3(1f, 1f, 1f);
-                topnote.noteobj.GetComponent<ParticleSystem>().Play();
-                active[topnote.lane].Enqueue(topnote);
-                stock.data.RemoveAt(stock.data.Count - 1);
-                Debug.Log(topnote.ID.ToString() + " poped");
-
-                if (stock.data.Count == 0)
+                Destroy(taplist[noteindex].noteobj);
+                noteindex++;
+                if (noteindex >= taplist.Count())
                 {
+                    is_playing = false;
                     break;
                 }
             }
         }
     }
-    public void start()
+    public void BackMenu()
     {
-        timerswitch = true;
+        SceneManager.LoadScene("Menu");
     }
 }

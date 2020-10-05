@@ -15,6 +15,7 @@ public class Game_Craft : MonoBehaviour//完成谱面的制作
     public Text time;
     public Button startbtn, finishbtn;
     public bool timerswitch = false;
+    public AudioSource[] drum = new AudioSource[4];
 
     public AudioSource music;
     public DataWrapper dwapper;
@@ -41,7 +42,8 @@ public class Game_Craft : MonoBehaviour//完成谱面的制作
             timer = AudioSettings.dspTime-dectime;
             time.text = timer.ToString();
             inputkeycode();
-            notes.transform.localPosition -= new Vector3((float)G.NOTE_SPEED * Time.deltaTime, 0f, 0f);
+            notes.transform.localPosition -= new Vector3((float)G.CRAF.NOTES_SPEED * Time.deltaTime, 0f, 0f);
+            Debug.Log(G.NOTE_SPEED.ToString());
         }
     }
 
@@ -58,6 +60,7 @@ public class Game_Craft : MonoBehaviour//完成谱面的制作
         int keyId = keycodeid();
         if (keyId!=-1)
         {
+            drum[keyId].Play();
             dwapper.taplist.Add((keyId,timer));
             Debug.Log("Time " + timer.ToString() + " added to the list");
 
@@ -84,7 +87,7 @@ public class Game_Craft : MonoBehaviour//完成谱面的制作
         var note = Instantiate(notePrefab.itemlist[id]);
         note.transform.SetParent(notes.transform);
         note.transform.position = anchor_spawn;
-        Destroy(note, 8.0f);
+        Destroy(note, 4.0f);
         yield return null;
     }
 }

@@ -9,15 +9,12 @@ using UnityEngine.Networking;
 public class MusicItem : MonoBehaviour
 {
     public filesystem.FilePath path;
-    public MessageBox msgbox;
-    public NowLoading loading;
     public SheetWrapper wrapper;
-    public Text title, author, difficulty;
+    public Text title, difficulty;
 
-    public void SetText(string title, string author, int difficulty)
+    public void SetText(string title, int difficulty)
     {
         this.title.text = title;
-        this.author.text = author;
         this.difficulty.text = difficulty.ToString();
     }
 
@@ -36,21 +33,16 @@ public class MusicItem : MonoBehaviour
                 UnityWebRequest req = UnityWebRequestMultimedia.GetAudioClip(uri, G.CRAF.mtype[path.musictype]);
                 StartCoroutine(getaudioclip(req));
             }
-            else
-            {
-                msgbox.Show(G.lang.message_load_musicdata_failure[G.setting.language]);
-            }
         }
         catch (Exception e)
         {
-            msgbox.Show(G.lang.message_onload_musicdata_error[G.setting.language]);
             Debug.Log(e.Message);
         }
     }
 
     private IEnumerator getaudioclip(UnityWebRequest req)
     {
-        yield return req.Send();
+        yield return req.SendWebRequest();
         if (req.isNetworkError)
         {
             Debug.Log(req.error);
@@ -58,7 +50,7 @@ public class MusicItem : MonoBehaviour
         else
         {
             wrapper.musicclip = DownloadHandlerAudioClip.GetContent(req);
-            loading.LoadNextScene("Main");
+            SceneManager.LoadScene("game");
         }
     }
 }

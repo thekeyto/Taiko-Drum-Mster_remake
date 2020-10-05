@@ -9,32 +9,23 @@ public class GameCMusic : MonoBehaviour
     public GameObject itemgroup;
     public SheetWrapper data;
 
-
-    public NowLoading loading;
-    public MessageBox messagebox;
-
     private Vector3 itemgroup_pos;
     private readonly float itemmargin = 10f;
 
     private void Awake()
     {
 
-        int i = 0;
-
         foreach(var item in filesystem.musicsheet_lib)
         {
             var new_item = Instantiate(tempitem);
             new_item.transform.SetParent(itemgroup.transform);
-            i++;
+
+            var summary = item.Value;
+            new_item.GetComponent<MusicItem>().path = item.Key;
+            new_item.GetComponent<MusicItem>().SetText(summary.title, summary.difficulty);
         }
         Destroy(tempitem);
     }
-
-    private void Start()
-    {
-        messagebox.Show(G.lang.message_all_musicsheet_loaded[G.CURLANG] + filesystem.musicsheet_lib.Count.ToString());
-    }
-
     public void BackMenu()
     {
         Destroy(data.gameObject);

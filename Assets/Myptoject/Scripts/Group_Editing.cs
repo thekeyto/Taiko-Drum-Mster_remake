@@ -25,19 +25,6 @@ public class Group_Editing : MonoBehaviour
 
     public void ShiftLeft()
     {
-        foreach (var n in game.selected)
-        {
-            n.lane = (n.lane + G.LANES - 1) % G.LANES;
-        }
-        Reposition();
-    }
-
-    public void ShiftRight()
-    {
-        foreach (var n in game.selected)
-        {
-            n.lane = (n.lane + 1) % G.LANES;
-        }
         Reposition();
     }
     private void Reposition()
