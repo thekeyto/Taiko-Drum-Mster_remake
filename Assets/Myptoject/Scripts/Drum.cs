@@ -5,6 +5,7 @@ using UnityEngine;
 public class Drum : MonoBehaviour
 {
     public GameObject[] image = new GameObject[4];
+    public AudioSource[] se;
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.D))
@@ -34,7 +35,10 @@ public class Drum : MonoBehaviour
 
     IEnumerator waitfortime(int id)
     {
+        se[id].Play();
+        image[4].SetActive(true);
         yield return new WaitForSeconds(0.1f);
         image[id].SetActive(false);
+        image[4].SetActive(false);
     }
 }

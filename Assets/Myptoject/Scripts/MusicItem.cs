@@ -20,24 +20,14 @@ public class MusicItem : MonoBehaviour
 
     public void Play()
     {
-        // Load the sheet data
-        try
-        {
-            sheet sheet = filesystem.Load_MusicSheet(path.sheetpath);
-            wrapper.data = sheet;
-            if (sheet != null)
+            wrapper.data = filesystem.Load_MusicSheet(path.sheetpath);
+            if (wrapper.data != null)
             {
-                // Load music using web request
                 string uri = "file:///" + path.musicpath;
                 Debug.Log(uri);
                 UnityWebRequest req = UnityWebRequestMultimedia.GetAudioClip(uri, G.CRAF.mtype[path.musictype]);
                 StartCoroutine(getaudioclip(req));
             }
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e.Message);
-        }
     }
 
     private IEnumerator getaudioclip(UnityWebRequest req)
@@ -50,6 +40,9 @@ public class MusicItem : MonoBehaviour
         else
         {
             wrapper.musicclip = DownloadHandlerAudioClip.GetContent(req);
+            GameObject.Find("Music").GetComponent<AudioSource>().clip= DownloadHandlerAudioClip.GetContent(req);
+
+            Debug.Log(true);
             SceneManager.LoadScene("game");
         }
     }

@@ -18,6 +18,7 @@ public class Game_Adjust : MonoBehaviour
         public GameObject noteobj;
     }
 
+    public GameObject startPoint;
     public NotePrefab tempnote;
     public GameObject musicsheet;
     public GameObject lane;
@@ -25,6 +26,7 @@ public class Game_Adjust : MonoBehaviour
     public Button previewbtn, savebtn;
     public Text time,deb;
     public GameObject musicobj;
+    private Vector3 anchor_spawn;
     private bool is_previewing = false;
 
     private double timer = 0f;
@@ -49,6 +51,7 @@ public class Game_Adjust : MonoBehaviour
         music = musicobj.GetComponent<AudioSource>();
         var obj = GameObject.Find("Data");
 
+        anchor_spawn = startPoint.transform.position;
         taplist = new List<N>();
         lanes_ypos = lane.transform.localPosition.x;
         foreach(var (a,b) in obj.GetComponent<DataWrapper>().taplist)
@@ -64,14 +67,14 @@ public class Game_Adjust : MonoBehaviour
             time.text = timer.ToString();
             var deltatime = Time.deltaTime;
             timer = AudioSettings.dspTime-dectime;
-            musicsheet.transform.localPosition -= new Vector3((float)G.CRAF.NOTES_SPEED *100* deltatime, 0f,  0f);
+            musicsheet.transform.localPosition -= new Vector3((float)G.CRAF.NOTES_SPEED * deltatime, 0f,  0f);
 
-            while (taplist[flag].atime <= timer + 3 && flag < taplist.Count()-1)
+            while (taplist[flag].atime <= timer + 2 && flag < taplist.Count()-1)
             { 
                 flag++; 
                 var instnote = Instantiate(tempnote.itemlist[taplist[flag].type]);
                 instnote.transform.SetParent(musicsheet.transform);
-                instnote.transform.localPosition = new Vector3(-460+100*(float)(taplist[flag].atime-timer)*(float)G.CRAF.NOTES_SPEED, 180f,  0f);
+                instnote.transform.position = anchor_spawn + new Vector3((float)(taplist[flag].atime-timer)*(float)G.CRAF.NOTES_SPEED, 0f,  0f);
                 taplist[flag].noteobj = instnote;
             }
             while(taplist[noteindex].atime<=timer)

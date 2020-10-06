@@ -1199,6 +1199,9 @@ TextureImporter:
   - first:
       213: 1751233207481885750
     second: explosion_upper_398
+  - first:
+      213: -1917418762322548528
+    second: explosion_upper_399
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -9706,6 +9709,27 @@ TextureImporter:
       bones: []
       spriteID: 63463d2e251ad4810800000000000000
       internalID: 1751233207481885750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: explosion_upper_399
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 24
+        width: 91
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d8681a6bc5f365e0800000000000000
+      internalID: -1917418762322548528
       vertices: []
       indices: 
       edges: []

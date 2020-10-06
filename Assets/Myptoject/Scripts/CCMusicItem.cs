@@ -44,6 +44,7 @@ public class CCMusicItem : MonoBehaviour
         {
             G.CRAF.currentmusic_path = musicpath;
             music.clip = DownloadHandlerAudioClip.GetContent(req);
+            Debug.Log(true);
             SceneManager.LoadScene("craftMusic");
         }
     }

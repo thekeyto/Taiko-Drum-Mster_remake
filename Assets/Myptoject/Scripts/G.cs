@@ -29,9 +29,10 @@ public class G : MonoBehaviour
     public const double NOTE_SPEED = 2f;
     public enum POSITION { Fixed,Random};
 
-    public static double PERFECT_MARGIN = 0.08f;
-    public static double GOOD_MARGIN = 0.16f;
-    public static double MISS_MARGIN = 0.2f;
+    public static double PERFECT_MARGIN = 0.02f;
+    public static double Great_MARGIN = 0.05f;
+    public static double GOOD_MARGIN = 0.08f;
+    public static double MISS_MARGIN = 0.10f;
 
     public const double POINT_BASE = 1000f;
 
