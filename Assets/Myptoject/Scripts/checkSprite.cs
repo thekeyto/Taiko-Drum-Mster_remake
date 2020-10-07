@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class checkSprite : MonoBehaviour
 {
-    public GameObject[] checkPic = new GameObject[4];
+    public GameObject[] checkPic = new GameObject[6];
+    public GameObject[] evaPic = new GameObject[6];
     public int type;
-    private void Start()
+    // Update is called once per frame
+    private void Awake()
     {
         type = -1;
     }
-    // Update is called once per frame
     void Update()
     {
         if (type!=-1)
         {
             checkPic[type].SetActive(true);
+            evaPic[type].SetActive(true);
             StartCoroutine(showpicture());
         }
     }
@@ -23,7 +25,11 @@ public class checkSprite : MonoBehaviour
     IEnumerator showpicture()
     {
         yield return new WaitForSeconds(0.1f);
+        if (type != -1) 
+        {
         checkPic[type].SetActive(false);
+        evaPic[type].SetActive(false);
+        }
         type = -1;
     }
 }

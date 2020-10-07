@@ -66,16 +66,16 @@ public class Game_Adjust : MonoBehaviour
         {
             time.text = timer.ToString();
             var deltatime = Time.deltaTime;
-            timer = AudioSettings.dspTime-dectime;
+            timer += Time.deltaTime;
             musicsheet.transform.localPosition -= new Vector3((float)G.CRAF.NOTES_SPEED * deltatime, 0f,  0f);
 
-            while (taplist[flag].atime <= timer + 2 && flag < taplist.Count()-1)
+            while (taplist[flag].atime <= timer + 3 && flag < taplist.Count()-1)
             { 
-                flag++; 
                 var instnote = Instantiate(tempnote.itemlist[taplist[flag].type]);
                 instnote.transform.SetParent(musicsheet.transform);
                 instnote.transform.position = anchor_spawn + new Vector3((float)(taplist[flag].atime-timer)*(float)G.CRAF.NOTES_SPEED, 0f,  0f);
                 taplist[flag].noteobj = instnote;
+                flag++; 
             }
             while(taplist[noteindex].atime<=timer)
             {
@@ -83,7 +83,6 @@ public class Game_Adjust : MonoBehaviour
                 deb.text = flag.ToString() + ' ' + taplist[noteindex].atime.ToString() + ' ' + noteindex.ToString();
                 Debug.Log(taplist[noteindex].type.ToString());
                 se[taplist[noteindex].type].Play();
-
                 Destroy(taplist[noteindex].noteobj);
                 noteindex++;
                 if (noteindex>=taplist.Count)
@@ -146,7 +145,7 @@ public class Game_Adjust : MonoBehaviour
     public void BackMenu()
     {
         Destroy(musicobj);
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene("initial");
     }
     public void ResetNote(N note)
     {

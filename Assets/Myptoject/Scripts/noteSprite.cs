@@ -12,6 +12,7 @@ public class noteSprite : MonoBehaviour
     public GameObject desFat;
     void Start()
     {
+        desFat = GameObject.Find("desFat");
         isactive = false;
         render = this.GetComponent<SpriteRenderer>();
         render.sprite = notactive;
@@ -23,7 +24,7 @@ public class noteSprite : MonoBehaviour
         if (isactive==true)
         {
             this.transform.SetParent(desFat.transform);
-            Destroy(this.gameObject, 0.1f);
+            Destroy(this.gameObject, 0.2f);
             render.sprite = active;
         }
     }

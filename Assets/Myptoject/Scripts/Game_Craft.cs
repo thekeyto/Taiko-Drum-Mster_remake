@@ -51,7 +51,8 @@ public class Game_Craft : MonoBehaviour//完成谱面的制作
     {
         if ((Input.GetKeyDown(KeyCode.D) && Input.GetKeyDown(KeyCode.K))) return 2;
         else if (Input.GetKeyDown(KeyCode.F) && Input.GetKeyDown(KeyCode.J)) return 3;
-        else if (Input.GetKeyDown(KeyCode.D)|| Input.GetKeyDown(KeyCode.K)) return 0;
+        else 
+        if (Input.GetKeyDown(KeyCode.D)|| Input.GetKeyDown(KeyCode.K)) return 0;
         else if (Input.GetKeyDown(KeyCode.F)|| Input.GetKeyDown(KeyCode.J)) return 1;
         return -1;
     }

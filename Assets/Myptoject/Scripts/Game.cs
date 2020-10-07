@@ -47,6 +47,7 @@ public class Game : MonoBehaviour
     private int combo = 0;
     private int activel,activer;
     private Vector3 spwan_point;
+    private bool iskick;
     private void Awake()
     {
         musicobj = GameObject.Find("Music");
@@ -60,6 +61,7 @@ public class Game : MonoBehaviour
         combo = 0;
 
         is_playing = true;
+        iskick = false;
         dectime = AudioSettings.dspTime;
 
         flag = 0;activel = 0;activer = 0;
@@ -72,44 +74,60 @@ public class Game : MonoBehaviour
         }
     }
     int keycodeid()//按键识别
-    {
+    {/*
         if ((Input.GetKeyDown(KeyCode.D) && Input.GetKeyDown(KeyCode.K))) return 2;
         else if (Input.GetKeyDown(KeyCode.F) && Input.GetKeyDown(KeyCode.J)) return 3;
-        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.K)) return 0;
-        else if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.J)) return 1;
+        else*/ 
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.K)) return 0;
+        if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.J)) return 1;
         return -1;
     }
-    private void Update()
+
+    private void FixedUpdate()
     {
+        if (timer >= data.data.summary.endtime) is_playing = false;
         if (is_playing)
         {
-            Debug.Log(noteindex+" "+taplist[noteindex].atime );
             gradeText.text = "Score:" + grade.ToString();
             comboText.text = "Combo:" + combo.ToString();
             time.text = timer.ToString();
             var deltatime = Time.deltaTime;
             timer += Time.deltaTime;
             musicsheet.transform.localPosition -= new Vector3((float)G.CRAF.NOTES_SPEED * deltatime, 0f, 0f);
-            desFat.transform.localPosition += new Vector3((float)G.CRAF.NOTES_SPEED *  deltatime, (float)G.CRAF.NOTES_SPEED * deltatime, 0f);
+            desFat.transform.localPosition += new Vector3((float)G.CRAF.NOTES_SPEED * deltatime, (float)G.CRAF.NOTES_SPEED * deltatime, 0f);
             //生成音符
-            while (taplist[flag].atime <= timer + 2 && flag < taplist.Count - 1)
+            while (flag < taplist.Count() - 1 && taplist[flag].atime <= timer + 3)
             {
-                flag++;
                 var instnote = Instantiate(tempnote.itemlist[taplist[flag].type]);
                 instnote.transform.SetParent(musicsheet.transform);
-                instnote.transform.position = spwan_point+ new Vector3( (float)(taplist[flag].atime - timer) * (float)G.CRAF.NOTES_SPEED, 0f, 0f);
+                instnote.transform.position = spwan_point + new Vector3((float)(taplist[flag].atime - timer ) * (float)G.CRAF.NOTES_SPEED, 0f, 0f);
                 taplist[flag].noteobj = instnote;
                 Destroy(instnote, (float)(taplist[flag].atime - timer + G.MISS_MARGIN));
+                flag++;     
+            }
+            if (noteindex != taplist.Count())
+            while (taplist[noteindex+1].atime - G.MISS_MARGIN <= timer && noteindex +1 <= taplist.Count() - 1)
+            {
+                if (iskick == false) combo = 0;
+                noteindex++;
+                    iskick = false;
+                //Debug.Log(flag.ToString());
+                //Debug.Log( flag.ToString()+' '+noteindex.ToString() + ' ' + taplist[noteindex].atime.ToString()+' '+timer.ToString());
+                if (noteindex == taplist.Count()) break;
             }
 
-            while (taplist[noteindex].atime - G.MISS_MARGIN <= timer&&noteindex<taplist.Count()-1)
-                noteindex++;
-            if (taplist[noteindex].atime-G.MISS_MARGIN<=timer)
+            if (Math.Abs(taplist[noteindex].atime - timer)<=G.MISS_MARGIN && iskick == false)
             {
-                int keyid = keycodeid();
+                int keyid=-1;
+                if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.K)) keyid = 0;
+                if (Input.GetKey(KeyCode.F) || Input.GetKey(KeyCode.J)) keyid = 1;
+                if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.K)) keyid = 2;
+                if (Input.GetKey(KeyCode.F) && Input.GetKey(KeyCode.J)) keyid = 3;
+                Debug.Log(timer.ToString()+' '+taplist[noteindex].atime.ToString() + ' ' + taplist[noteindex].type.ToString() + ' ' + keyid);
                 if (keyid != -1 && keyid == taplist[noteindex].type)
-                {
-                    taplist[noteindex].noteobj.GetComponent<noteSprite>().desFat = desFat;
+                {                
+                    iskick = true;
+                    Debug.Log("note "+noteindex.ToString()+ taplist[noteindex].noteobj.GetComponent<noteSprite>().isactive.ToString());
                     taplist[noteindex].noteobj.GetComponent<noteSprite>().isactive = true;
                     grade += getgrade(noteindex);
                 }
@@ -121,28 +139,23 @@ public class Game : MonoBehaviour
         double sub = Math.Abs(timer-taplist[order].atime);
         if (sub <= G.PERFECT_MARGIN)
         {
-            combo ++;
+            combo++;
             checkpic.GetComponent<checkSprite>().type = 0;
-            return combo+100;
+            return combo + 100;
         }
         else if (sub <= G.Great_MARGIN)
         {
             combo++;
-
             checkpic.GetComponent<checkSprite>().type = 1;
             return combo + 50;
         }
         else if (sub <= G.GOOD_MARGIN)
         {
-            combo ++;
+            combo++;
             checkpic.GetComponent<checkSprite>().type = 2;
-            return combo+20;
+            return combo + 20;
         }
-        else
-        {
-            combo = 0;
-            return 0;
-        }
+        else return 0;
     }
     public void BackMenu()
     {
