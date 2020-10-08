@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Myptoject/Scenes/initial.unity
+    guid: b2738918dcff23c4d9911002837f49e9
+  - enabled: 1
     path: Assets/Myptoject/Scenes/Menu.unity
     guid: 06baec0c754e5f84ab38140253f315a3
   - enabled: 1
@@ -23,10 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Myptoject/Scenes/game.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Myptoject/Scenes/initial.unity
-    guid: b2738918dcff23c4d9911002837f49e9
+    path: Assets/Myptoject/Scenes/score.unity
+    guid: 9a4bcb54194aa8949a8f54108fb0e473
   m_configObjects: {}

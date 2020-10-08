@@ -29,10 +29,10 @@ public class G : MonoBehaviour
     public const double NOTE_SPEED = 2f;
     public enum POSITION { Fixed,Random};
 
-    public static double PERFECT_MARGIN = 0.15f;
-    public static double Great_MARGIN = 0.20f;
-    public static double GOOD_MARGIN = 0.25f;
-    public static double MISS_MARGIN = 0.30f;
+    public static double PERFECT_MARGIN = 0.12f;
+    public static double Great_MARGIN = 0.16f;
+    public static double GOOD_MARGIN = 0.20f;
+    public static double MISS_MARGIN = 0.20f;
 
     public const double POINT_BASE = 1000f;
 
@@ -48,7 +48,7 @@ public class G : MonoBehaviour
     
     public static class CRAF
     {
-        public static double NOTES_SPEED = 5f;
+        public static double NOTES_SPEED = 4f;
         public static string currentmusic_path = null;
         public readonly static Dictionary<string, AudioType> mtype = new Dictionary<string, AudioType>() {
             { ".mp3",  AudioType.MPEG}, { ".wav",  AudioType.WAV},{ ".ogg",  AudioType.OGGVORBIS}

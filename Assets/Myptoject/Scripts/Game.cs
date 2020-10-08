@@ -28,11 +28,13 @@ public class Game : MonoBehaviour
     public Text time;
     public Text gradeText;
     public Text comboText;
+    public scoreSystem score;
     private bool is_playing = false;
 
     private double timer = 0f;
     private int noteindex = 0;
 
+    private int perfect = 0, great = 0, good = 0, maxcombo = 0;
     public AudioSource music;
 
     public List<N> taplist;
@@ -45,6 +47,7 @@ public class Game : MonoBehaviour
     private int grade = 0;
     private int flag = 0;
     private int combo = 0;
+    private int keyid;
     private int activel,activer;
     private Vector3 spwan_point;
     private bool iskick;
@@ -57,11 +60,13 @@ public class Game : MonoBehaviour
 
         music = musicobj.GetComponent<AudioSource>();
         music.clip = data.musicclip;
+        music.Play();
 
         combo = 0;
 
         is_playing = true;
         iskick = false;
+        keyid = -1;
         dectime = AudioSettings.dspTime;
 
         flag = 0;activel = 0;activer = 0;
@@ -82,20 +87,39 @@ public class Game : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.J)) return 1;
         return -1;
     }
-
+    void update()
+    {
+        score.perfect = perfect;
+        score.great = great;
+        score.good = good;
+        score.maxcombo = maxcombo;
+        score.grade = grade;
+    }
     private void FixedUpdate()
     {
-        if (timer >= data.data.summary.endtime) is_playing = false;
+        if (timer >= data.data.summary.endtime)
+        {
+            is_playing = false;
+            music.Stop();
+            score.perfect = perfect;
+            score.great = great;
+            score.good = good;
+            score.maxcombo = maxcombo;
+            score.grade = grade;
+            SceneManager.LoadScene("score");
+        }
         if (is_playing)
         {
+            update();
             gradeText.text = "Score:" + grade.ToString();
             comboText.text = "Combo:" + combo.ToString();
             time.text = timer.ToString();
             var deltatime = Time.deltaTime;
-            timer += Time.deltaTime;
+            timer = AudioSettings.dspTime-dectime;
             musicsheet.transform.localPosition -= new Vector3((float)G.CRAF.NOTES_SPEED * deltatime, 0f, 0f);
             desFat.transform.localPosition += new Vector3((float)G.CRAF.NOTES_SPEED * deltatime, (float)G.CRAF.NOTES_SPEED * deltatime, 0f);
             //生成音符
+            if (flag!=taplist.Count())
             while (flag < taplist.Count() - 1 && taplist[flag].atime <= timer + 3)
             {
                 var instnote = Instantiate(tempnote.itemlist[taplist[flag].type]);
@@ -108,9 +132,10 @@ public class Game : MonoBehaviour
             if (noteindex != taplist.Count())
             while (taplist[noteindex+1].atime - G.MISS_MARGIN <= timer && noteindex +1 <= taplist.Count() - 1)
             {
+                maxcombo = Math.Max(maxcombo, combo);
                 if (iskick == false) combo = 0;
                 noteindex++;
-                    iskick = false;
+                    iskick = false; keyid = -1;
                 //Debug.Log(flag.ToString());
                 //Debug.Log( flag.ToString()+' '+noteindex.ToString() + ' ' + taplist[noteindex].atime.ToString()+' '+timer.ToString());
                 if (noteindex == taplist.Count()) break;
@@ -118,11 +143,13 @@ public class Game : MonoBehaviour
 
             if (Math.Abs(taplist[noteindex].atime - timer)<=G.MISS_MARGIN && iskick == false)
             {
-                int keyid=-1;
-                if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.K)) keyid = 0;
-                if (Input.GetKey(KeyCode.F) || Input.GetKey(KeyCode.J)) keyid = 1;
-                if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.K)) keyid = 2;
-                if (Input.GetKey(KeyCode.F) && Input.GetKey(KeyCode.J)) keyid = 3;
+                if (keyid == -1|| keyid != taplist[noteindex].type)
+                {
+                    if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.K)) keyid = 0;
+                    if (Input.GetKey(KeyCode.F) || Input.GetKey(KeyCode.J)) keyid = 1;
+                    if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.K)) keyid = 2;
+                    if (Input.GetKey(KeyCode.F) && Input.GetKey(KeyCode.J)) keyid = 3;
+                }
                 Debug.Log(timer.ToString()+' '+taplist[noteindex].atime.ToString() + ' ' + taplist[noteindex].type.ToString() + ' ' + keyid);
                 if (keyid != -1 && keyid == taplist[noteindex].type)
                 {                
@@ -139,19 +166,19 @@ public class Game : MonoBehaviour
         double sub = Math.Abs(timer-taplist[order].atime);
         if (sub <= G.PERFECT_MARGIN)
         {
-            combo++;
+            combo++;perfect++;
             checkpic.GetComponent<checkSprite>().type = 0;
             return combo + 100;
         }
         else if (sub <= G.Great_MARGIN)
         {
-            combo++;
+            combo++;great++;
             checkpic.GetComponent<checkSprite>().type = 1;
             return combo + 50;
         }
         else if (sub <= G.GOOD_MARGIN)
         {
-            combo++;
+            combo++;good++;
             checkpic.GetComponent<checkSprite>().type = 2;
             return combo + 20;
         }
@@ -161,5 +188,11 @@ public class Game : MonoBehaviour
     {
         Destroy(GameObject.Find("SheetWapper"));
         SceneManager.LoadScene("Menu");
+    }
+
+    public void Getscore()
+    {
+        Destroy(GameObject.Find("SheetWapper"));
+        SceneManager.LoadScene("score");
     }
 }

@@ -29,7 +29,7 @@ public class GameCMusic : MonoBehaviour
     }
     public void BackMenu()
     {
-        Destroy(data.gameObject);
+        Destroy(GameObject.Find("score"));
         SceneManager.LoadScene("Menu");
     }
 }

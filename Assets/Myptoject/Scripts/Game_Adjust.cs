@@ -66,7 +66,7 @@ public class Game_Adjust : MonoBehaviour
         {
             time.text = timer.ToString();
             var deltatime = Time.deltaTime;
-            timer += Time.deltaTime;
+            timer = AudioSettings.dspTime-dectime;
             musicsheet.transform.localPosition -= new Vector3((float)G.CRAF.NOTES_SPEED * deltatime, 0f,  0f);
 
             while (taplist[flag].atime <= timer + 3 && flag < taplist.Count()-1)

@@ -7,8 +7,6 @@ public class Game_CCMusic : MonoBehaviour
 {
     public GameObject musicitem;
     public GameObject itemgroup;
-
-    public MessageBox msgbox;
     public AudioSource music; 
 
     private void Awake()
